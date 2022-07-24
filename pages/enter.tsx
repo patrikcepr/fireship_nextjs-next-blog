@@ -1,9 +1,10 @@
-import { auth, firestore, googleAuthProvider } from '../lib/firebase';
 import { useContext, useState, useCallback, useEffect } from 'react';
-import { UserContext } from '../lib/context';
+import { auth, firestore, googleAuthProvider } from '../lib/firebase';
+import Image from 'next/image';
 import debounce from 'lodash.debounce';
+import { UserContext } from '../lib/context';
 
-const Enter = (props) => {
+const Enter = (props: any) => {
   const { user, username } = useContext(UserContext);
 
   //Sign in with google button
@@ -14,7 +15,7 @@ const Enter = (props) => {
 
     return (
       <button className='btn-google' onClick={signInWithGoogle}>
-        <img src={'/google.png'} alt='Google' />
+        <Image src={'/google.png'} alt='Google' width='48px' height='48px' />
         Sign in with Google
       </button>
     );
@@ -33,26 +34,26 @@ const Enter = (props) => {
 
     const { user, username } = useContext(UserContext);
 
-    const onSubmit = async (e) => {
+    const onSubmit = async (e: { preventDefault: () => void }) => {
       e.preventDefault();
 
       //Create refs for both documents in database
-      const userDoc = firestore.doc(`users/${user.uid}`);
+      const userDoc = firestore.doc(`users/${user?.uid}`);
       const usernameDoc = firestore.doc(`usernames/${formValue}`);
 
       // Commit both docs together as a batch write.
       const batch = firestore.batch();
       batch.set(userDoc, {
         username: formValue,
-        photoURL: user.photoURL,
-        displayName: user.displayName,
+        photoURL: user!.photoURL,
+        displayName: user!.displayName,
       });
-      batch.set(usernameDoc, { uid: user.uid });
+      batch.set(usernameDoc, { uid: user!.uid });
 
       await batch.commit();
     };
 
-    const onChange = (e) => {
+    const onChange = (e: { target: { value: string } }) => {
       // force form value typed in form to match correct format
       // Force form value typed in form to match correct format
       const val = e.target.value.toLowerCase();
@@ -79,8 +80,9 @@ const Enter = (props) => {
 
     // Hit the database for username match after each debounced change
     // useCallback is required for debounce to work
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const checkUsername = useCallback(
-      debounce(async (username) => {
+      debounce(async (username: string | any[]) => {
         if (username.length >= 3) {
           const ref = firestore.doc(`usernames/${username}`);
           const { exists } = await ref.get();
@@ -93,7 +95,8 @@ const Enter = (props) => {
     );
 
     return (
-      !username && (
+      <>
+        !username && (
         <section>
           <h3>Choose Username</h3>
           <form onSubmit={onSubmit}>
@@ -118,7 +121,8 @@ const Enter = (props) => {
             </div>
           </form>
         </section>
-      )
+        )
+      </>
     );
   };
 

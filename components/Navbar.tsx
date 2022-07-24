@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { Fragment, useContext } from 'react';
 import { UserContext } from '../lib/context';
 
@@ -24,20 +25,27 @@ const Navbar = () => {
             </li>
             <li>
               <Link href={`/${username}`} passHref>
-                <img src={user?.photoURL} />
+                <a>
+                  {user && (
+                    <Image
+                      src={user.photoURL!}
+                      alt={user.displayName!}
+                      width='48px'
+                      height='48px'
+                    />
+                  )}
+                </a>
               </Link>
             </li>
           </Fragment>
         )}
         {/* user is not logged in */}
         {!username && (
-          <Fragment>
-            <li>
-              <Link href='/enter' passHref>
-                <button className='btn-blue'>Log in</button>
-              </Link>
-            </li>
-          </Fragment>
+          <li>
+            <Link href='/enter' passHref>
+              <button className='btn-blue'>Log in</button>
+            </Link>
+          </li>
         )}
       </ul>
     </nav>

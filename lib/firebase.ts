@@ -4,13 +4,13 @@ import 'firebase/compat/firestore';
 import 'firebase/compat/storage';
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyBNAsvrnVT7kAO1Jy1XPrjdBoKiAZwNZ2E',
-  authDomain: 'next-social-blog.firebaseapp.com',
-  projectId: 'next-social-blog',
-  storageBucket: 'next-social-blog.appspot.com',
-  messagingSenderId: '313688976774',
-  appId: '1:313688976774:web:fca3e1223cf1532661d007',
-  measurementId: 'G-MMM0MY5544',
+  apiKey: process.env.NEXT_PUBLIC_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_APP_ID,
+  measurementId: process.env.NEXT_PUBLIC_MASUREMENT_ID,
 };
 
 if (!firebase.apps.length) {

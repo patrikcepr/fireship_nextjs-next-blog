@@ -1,10 +1,15 @@
 import Head from 'next/head';
-import styles from '../styles/Home.module.css';
-
+import styles from '../styles/Home.module.scss';
+import toast, { Toaster } from 'react-hot-toast';
 import Loader from '../components/Loader';
 
-import toast from 'react-hot-toast';
+const Home = (show: false) => {
+  return (
+    <div>
+      <Loader show />
+      <button onClick={() => toast.success('Succes')}>Toast me</button>
+    </div>
+  );
+};
 
-export default function Home() {
-  return <div></div>;
-}
+export default Home;
