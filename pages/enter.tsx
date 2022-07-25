@@ -1,11 +1,15 @@
-import { useContext, useState, useCallback, useEffect } from 'react';
-import { auth, firestore, googleAuthProvider } from '../lib/firebase';
-import Image from 'next/image';
-import debounce from 'lodash.debounce';
-import { UserContext } from '../lib/context';
+import debounce from "lodash.debounce";
+import { NextPage } from "next";
+import Image from "next/image";
+import { useCallback, useContext, useEffect, useState } from "react";
 
-const Enter = (props: any) => {
+import { UserContext } from "../lib/context";
+import { auth, firestore, googleAuthProvider } from "../lib/firebase";
+
+const Enter: NextPage = (props) => {
   const { user, username } = useContext(UserContext);
+
+  console.log(props);
 
   //Sign in with google button
   const SignInButton = () => {
@@ -14,8 +18,8 @@ const Enter = (props: any) => {
     };
 
     return (
-      <button className='btn-google' onClick={signInWithGoogle}>
-        <Image src={'/google.png'} alt='Google' width='48px' height='48px' />
+      <button className="btn-google" onClick={signInWithGoogle}>
+        <Image src={"/google.png"} alt="Google" width="48px" height="48px" />
         Sign in with Google
       </button>
     );
@@ -28,11 +32,13 @@ const Enter = (props: any) => {
 
   // User form
   const UsernameForm = () => {
-    const [formValue, setFormValue] = useState('');
+    const [formValue, setFormValue] = useState("");
     const [isValid, setIsValid] = useState(false);
     const [loading, setLoading] = useState(false);
 
     const { user, username } = useContext(UserContext);
+
+    alert(username);
 
     const onSubmit = async (e: { preventDefault: () => void }) => {
       e.preventDefault();
@@ -86,7 +92,7 @@ const Enter = (props: any) => {
         if (username.length >= 3) {
           const ref = firestore.doc(`usernames/${username}`);
           const { exists } = await ref.get();
-          console.log('Firestore read executed!');
+          console.log("Firestore read executed!");
           setIsValid(!exists);
           setLoading(false);
         }
@@ -101,13 +107,13 @@ const Enter = (props: any) => {
           <h3>Choose Username</h3>
           <form onSubmit={onSubmit}>
             <input
-              type='text'
-              name='username'
-              placeholder='username'
+              type="text"
+              name="username"
+              placeholder="username"
               value={formValue}
               onChange={onChange}
             />
-            <button type='submit' className='btn-green' disabled={!isValid}>
+            <button type="submit" className="btn-green" disabled={!isValid}>
               Choose
             </button>
 
