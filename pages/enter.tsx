@@ -51,10 +51,10 @@ const Enter: NextPage = (props) => {
       const batch = firestore.batch();
       batch.set(userDoc, {
         username: formValue,
-        photoURL: user!.photoURL,
-        displayName: user!.displayName,
+        photoURL: user?.photoURL,
+        displayName: user?.displayName,
       });
-      batch.set(usernameDoc, { uid: user!.uid });
+      batch.set(usernameDoc, { uid: user?.uid });
 
       await batch.commit();
     };
@@ -88,7 +88,7 @@ const Enter: NextPage = (props) => {
     // useCallback is required for debounce to work
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const checkUsername = useCallback(
-      debounce(async (username: string | any[]) => {
+      debounce(async (username: string | unknown[]) => {
         if (username.length >= 3) {
           const ref = firestore.doc(`usernames/${username}`);
           const { exists } = await ref.get();
